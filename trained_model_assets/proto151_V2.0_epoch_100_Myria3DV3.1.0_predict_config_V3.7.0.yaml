@@ -261,8 +261,8 @@ task:
   auto_lr_find: false
 predict:
   #src_las: /home/rajoh/projects/myria3d/tests/data/toy_dataset_src/862000_6652000.classified_toy_dataset.100mx100m.las
-  src_las:  /mnt/T/mnt/trainingdata/lidar/colorized.laz
-  output_dir: /mnt/T/mnt/trainingdata/lidar/test_data/output_files/splitted_laz/myria_output/
+  src_las:  /mnt/T/mnt/trainingdata/lidar/test_data/rgbNir_colorized_myria_input/colorized.laz
+  output_dir: /mnt/T/mnt/trainingdata/lidar/test_data/myria_output/
   ckpt_path: trained_model_assets/proto151_V2.0_epoch_100_Myria3DV3.1.0.ckpt
   subtile_overlap: 0
   gpus: 0

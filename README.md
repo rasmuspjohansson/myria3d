@@ -32,6 +32,22 @@ Although the library can be extended with new neural network architectures or ne
 > &rarr; A stable, production-ready version of Myria3D is tracked by a [Production Release](https://github.com/IGNF/myria3d/releases/tag/prod-release-tag). In the release's assets are a trained multiclass segmentation model as well as the necessary configuration file to perform inference on French "Lidar HD" data. Those assets are provided for convenience, and are subject to change in time to reflect latest model training.
 ___
 
+
+#usage at KDS instructions 
+```
+In this example a KDS .laz file is colorized with RGBNir data from ortofoto (better to use the real values)
+this file is used for configuration of the Myria3D classifier: trained_model_assets/proto151_V2.0_epoch_100_Myria3DV3.1.0_predict_config_V3.7.0.yaml
+in this .yml file the model to use is defined (trained_model_assets/proto151_V2.0_epoch_100_Myria3DV3.1.0.ckpt) as well as what .laz file to classify (/mnt/T/mnt/trainingdata/lidar/test_data/rgbNir_colorized_myria_input/colorized.laz) and what pretrained model to use:(trained_model_assets/proto151_V2.0_epoch_100_Myria3DV3.1.0.ckpt)  
+In order to visualize the resulting classifications in qgis the resulting -laz file is read by read_and_write_laz.py and saved in a format that qgis can read
+
+python add_rgbnir_to_laz.py --laz_file /mnt/T/mnt/trainingdata/lidar/test_data/splitted_laz/split_1.laz --raster /mnt/T/mnt/trainingdata/lidar/test_data/2024_1km_6179_723.tif --output_laz /mnt/T/mnt/trainingdata/lidar/test_data/rgbNir_colorized_myria_input/colorized.laz
+python run.py task.task_name=predict
+python read_and_write_laz.py --input_laz /mnt/T/mnt/trainingdata/lidar/test_data/myria_output/colorized.laz --output_laz /mnt/T/mnt/trainingdata/lidar/test_data/cleaned_up_myria_output/cleaned_up_colorized.laz
+
+```
+___
+
+
 Please cite Myria3D if it helped your own research. Here is an example BibTex entry:
 ```
 @misc{gaydon2022myria3d,
