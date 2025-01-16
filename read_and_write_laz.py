@@ -25,8 +25,8 @@ def read_laz_file(laz_input):
         data['rgb'] = rgb.tolist()
 
     # Extract infrared values if they exist
-    if hasattr(las, 'infrared'):
-        infrared = las.infrared
+    if hasattr(las, 'nir'):
+        infrared = las.nir
         data['infrared'] = infrared.tolist()
     else:
         print("#####no infrared!###########")
@@ -92,6 +92,8 @@ def create_laz_file(laz_file_path, values, epsg_value, point_format=8, version="
     if "infrared" in values and len(values["infrared"])>0:
         print(values["infrared"])
         las.nir = np.array(values["infrared"])
+        print(np.array(values["infrared"]))
+        print("writing infrared values to new .laz")
 
     if "confidence" in values:
         print("overwritign the classification values with the confidence vlaues")
