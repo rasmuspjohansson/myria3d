@@ -46,7 +46,7 @@ python read_and_write_laz.py --input_laz /mnt/T/mnt/trainingdata/lidar/test_data
 
 
 PROBLEMS and TODO:
-The result of the above comands is a classification that seem to work as it should but is having some related to teh 50x50 meter receptive field size. There is a clear 'checker box pattern' and a lkot of things are incorectly classified as water . 
+The result of the above comands is a classification that seem to work as it should but is having some problems related to teh 50x50 meter receptive field size. There is a clear 'checker box pattern' and a lkot of things are incorectly classified as water . 
 
 Potential fixes: 1. make the receptive field larger 2. investigate if we can use overlaps? 3. create our own trainingdata and finetune the model to our data 4. we can then also introduce more classes (e.g cars)
 e.g python run.py task.task_name=predict predict.subtile_overlap=25
