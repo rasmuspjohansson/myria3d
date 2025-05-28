@@ -37,6 +37,7 @@ class HDF5Dataset(Dataset):
         pre_filter=pre_filter_below_n_points,
         train_transform: List[Callable] = None,
         eval_transform: List[Callable] = None,
+        colours = [],
     ):
         """Initialization, taking care of HDF5 dataset preparation if needed, and indexation of its content.
 
@@ -86,6 +87,7 @@ class HDF5Dataset(Dataset):
             pre_filter,
             subtile_overlap_train,
             points_pre_transform,
+            colours = colours,
         )
 
         # Use property once to be sure that samples are all indexed into the hdf5 file.
@@ -203,6 +205,7 @@ def create_hdf5(
     pre_filter: Optional[Callable[[Data], bool]] = pre_filter_below_n_points,
     subtile_overlap_train: Number = 0,
     points_pre_transform: Callable = lidar_hd_pre_transform,
+    colours=[],
 ):
     """Create a HDF5 dataset file from las.
 
@@ -253,7 +256,7 @@ def create_hdf5(
                 ):
                     if not points_pre_transform:
                         continue
-                    data = points_pre_transform(sample_points)
+                    data = points_pre_transform(sample_points,colours)
                     if pre_filter is not None and pre_filter(data):
                         # e.g. pre_filter spots situations where num_nodes is too small.
                         continue

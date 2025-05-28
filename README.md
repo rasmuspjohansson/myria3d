@@ -50,6 +50,26 @@ The result of the above comands is a classification that seem to work as it shou
 
 Potential fixes: 1. make the receptive field larger 2. investigate if we can use overlaps? 3. create our own trainingdata and finetune the model to our data 4. we can then also introduce more classes (e.g cars)
 e.g python run.py task.task_name=predict predict.subtile_overlap=25
+
+
+TRAINING
+
+test first on the testdataset
+python myria3d/pctl/dataset/toy_dataset.py
+python run.py experiment=RandLaNet-Overfit hydra.run.dir=logs logger=csv
+
+
+TRAINING a model with fewer input channels
+
+#remove the datachennel from the original .laz file 
+python las_data_remover.py --input_laz tests/data/toy_dataset_src/862000_6652000.classified_toy_dataset.100mx100m.las --output_laz tests/data/toy_dataset_src/862000_6652000.classified_toy_dataset.100mx100m_no_nir.las --remove infrared
+
+
+#if the .las files have a new name we need to update the split.csv file to reflect their new names
+nano tests/data/toy_dataset_src/toy_dataset_split.csv
+
+python run.py experiment=RandLaNet-Overfit_no_nir hydra.run.dir=logs logger=csv model.d_in=7
+
 ```
 ___
 

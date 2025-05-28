@@ -9,10 +9,9 @@ sys.path.append(osp.dirname(osp.dirname(osp.dirname(osp.dirname(__file__)))))
 from myria3d.pctl.dataset.hdf5 import HDF5Dataset  # noqa
 
 TOY_EPSG = "2154"
-TOY_LAS_DATA = "tests/data/toy_dataset_src/862000_6652000.classified_toy_dataset.100mx100m.las"
-TOY_DATASET_HDF5_PATH = "tests/data/toy_dataset.hdf5"
-COLOURS =["Red", "Green", "Blue", "Infrared","ndvi"]
-
+TOY_LAS_DATA = "tests/data/toy_dataset_src/862000_6652000.classified_toy_dataset.100mx100m_no_nir.las"
+TOY_DATASET_HDF5_PATH = "tests/data/toy_dataset_no_nir.hdf5"
+COLOURS = ["Red", "Green", "Blue"] #(no infrared) # ["Red", "Green", "Blue", "Infrared"] 
 
 def make_toy_dataset_from_test_file():
     """Prepare a toy dataset from a single, small LAS file.
@@ -32,6 +31,7 @@ def make_toy_dataset_from_test_file():
         str: path to directory containing prepared dataset.
 
     """
+    
     if os.path.isfile(TOY_DATASET_HDF5_PATH):
         os.remove(TOY_DATASET_HDF5_PATH)
 

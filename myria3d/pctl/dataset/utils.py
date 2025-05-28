@@ -143,6 +143,8 @@ def split_cloud_into_samples(
         _type_: idx_in_original_cloud, and points of sample in pdal input format casted as floats.
 
     """
+    print("las_path:"+str(las_path))
+    epsg = "2154"
     points = pdal_read_las_array_as_float32(las_path, epsg)
     pos = np.asarray([points["X"], points["Y"], points["Z"]], dtype=np.float32).transpose()
     kd_tree = cKDTree(pos[:, :2] - pos[:, :2].min(axis=0))
