@@ -113,6 +113,26 @@ class CopySampledPos(BaseTransform):
         data.copies["pos_sampled_copy"] = data["pos"].clone()
         return data
 
+class StandardizeIntensity(BaseTransform):
+    """Standardize log(Intensity) features."""
+
+    def __call__(self, data: Data):
+        idx = data.x_features_names.index("Intensity")
+        # Log transform to be less sensitive to large outliers - info is in lower values
+        data.x[:, idx] = torch.log(data.x[:, idx] + 1)
+        data.x[:, idx] = self.standardize_channel(data.x[:, idx])
+        return data
+
+    def standardize_channel(self, channel_data: torch.Tensor, clamp_sigma: int = 3):
+        """Sample-wise standardization y* = (y-y_mean)/y_std. clamping to ignore large values."""
+        mean = channel_data.mean()
+        std = channel_data.std() + 10**-6
+        if torch.isnan(std):
+            std = 1.0
+        standard = (channel_data - mean) / std
+        clamp = clamp_sigma * std
+        clamped = torch.clamp(input=standard, min=-clamp, max=clamp)
+        return clamped
 
 class StandardizeRGBAndIntensity(BaseTransform):
     """Standardize RGB and log(Intensity) features."""

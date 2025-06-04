@@ -63,12 +63,18 @@ TRAINING a model with fewer input channels
 
 #remove the datachennel from the original .laz file 
 python las_data_remover.py --input_laz tests/data/toy_dataset_src/862000_6652000.classified_toy_dataset.100mx100m.las --output_laz tests/data/toy_dataset_src/862000_6652000.classified_toy_dataset.100mx100m_no_nir.las --remove infrared
+#crate a .yml file that descriobes the training a
+nano configs/experiment/RandLaNet-Overfit_xyz_intensity.yaml
+#create the split file that is referenced in the .yml
+nano path/to/split.csv
+#create a script for convering the dataset 
+nano myria3d/pctl/dataset/xyz_intensity_dataset.py
+python myria3d/pctl/dataset/xyz_intensity_dataset.py
 
 
-#if the .las files have a new name we need to update the split.csv file to reflect their new names
-nano tests/data/toy_dataset_src/toy_dataset_split.csv
+#train
+python run.py experiment=RandLaNet-Overfit_xyz_intensity hydra.run.dir=logs logger=csv model.d_in=3
 
-python run.py experiment=RandLaNet-Overfit_no_nir hydra.run.dir=logs logger=csv model.d_in=7
 
 ```
 ___

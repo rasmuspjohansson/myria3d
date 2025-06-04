@@ -10,9 +10,6 @@ def read_laz_file(laz_input):
 
     # Create a dictionary to store the extracted data
     data = {
-        'points': [],
-        'rgb': [],
-        'infrared': []
     }
 
     # Extract x, y, z coordinates
@@ -32,7 +29,7 @@ def read_laz_file(laz_input):
         print("#####no infrared!###########")
 
 
-    # Extract infrared values if they exist
+    # Extract confidence values if they exist
     if hasattr(las, 'confidence'):
         input("input has confidence!!!!!!")
         confidence = las.confidence
@@ -109,20 +106,34 @@ def create_laz_file(laz_file_path, values, epsg_value, point_format=8, version="
     las.write(laz_file_path, do_compress=True)
     print(f"Point cloud successfully written to {laz_file_path}")
 
+
+
 def main():
-    # Argument parser for input and output .laz file paths
     parser = argparse.ArgumentParser(description="Process and write .laz files")
     parser.add_argument('--input_laz', type=str, required=True, help="Path to the input .laz file")
     parser.add_argument('--output_laz', type=str, required=True, help="Path to save the output .laz file")
     parser.add_argument("--epsg", type=int, default=7416, help="EPSG code for the CRS (default: 7416).")
-    parser.add_argument("--remove", nargs='*', help="Specify data types to remove (e.g., 'nir', 'rgb')") # New argument
+    parser.add_argument("--remove", nargs='*', help="Specify data types to remove (e.g., 'nir', 'rgb')")
     args = parser.parse_args()
 
-    # Read data from the input .laz file
     values = read_laz_file(args.input_laz)
 
-    # Create the output .laz file using the read data and the remove flag
-    create_laz_file(args.output_laz, values, epsg_value=args.epsg, remove_data=args.remove) # Pass remove_data
+    # Determine point format
+    remove = args.remove or []
+    if "rgb" in remove and "nir" in remove:
+        point_format = 6  # No RGB, no NIR
+    elif "nir" in remove:
+        point_format = 7  # RGB only
+    else:
+        point_format = 8  # RGB and NIR
+
+    create_laz_file(
+        laz_file_path=args.output_laz,
+        values=values,
+        epsg_value=args.epsg,
+        point_format=point_format,
+        remove_data=remove
+    )
 
 if __name__ == '__main__':
     main()
